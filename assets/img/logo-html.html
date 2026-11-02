@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcademicEase Logo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+        }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4285F4, #34A853);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-icon::before {
+            content: 'A';
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .logo-icon::after {
+            content: 'E';
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            font-weight: bold;
+            position: absolute;
+            bottom: 2px;
+            right: 3px;
+        }
+        .logo-text {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .academic {
+            color: #4285F4;
+        }
+        .ease {
+            color: #34A853;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <div class="logo-icon"></div>
+        <div class="logo-text">
+            <span class="academic">Academic</span><span class="ease">Ease</span>
+        </div>
+    </div>
+</body>
+</html>

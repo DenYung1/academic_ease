@@ -1,0 +1,9 @@
+{
+  "name": "AcademicEase",
+  "short_name": "AcademicEase",
+  "description": "AI-powered homework and study assistant for JHS/SHS students in Ghana",
+  "start_url": "/index.php",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1A73E8"
+}

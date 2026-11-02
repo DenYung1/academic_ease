@@ -1,0 +1,74 @@
+Academic Ease Cleanup Plan
+
+CORE FILES TO KEEP:
+1. Main Application Files:
+   - index.php
+   - login.php
+   - register.php
+   - dashboard.php
+   - study-fixed.php (replaces study.php)
+   - ai-assistant-fixed.php (replaces ai-assistant.php)
+   - progress-fixed.php (replaces progress.php)
+   - profile.php
+   - logout.php
+   - parent-dashboard.php
+   - subscribe-direct.php (replaces subscribe.php)
+
+2. Core Service Worker:
+   - service-worker.js (optimized version with caching)
+
+3. Core Assets:
+   - All files in assets/css
+   - All files in assets/js
+   - All files in assets/img
+
+4. Core Includes:
+   - config.php
+   - db_connect.php
+
+5. Support Files:
+   - offline.html
+   - manifest.json
+   - check-session.php (useful diagnostic tool)
+
+FILES TO BACKUP AND REMOVE:
+1. Redundant Application Files:
+   - study.php (replaced by study-fixed.php)
+   - ai-assistant.php (replaced by ai-assistant-fixed.php)
+   - progress.php (replaced by progress-fixed.php)
+   - subscribe.php (replaced by subscribe-direct.php)
+
+2. Redundant Service Worker Files:
+   - service-worker-disabled.js
+   - service-worker-fixed.js
+   - empty-service-worker.js
+
+3. Redundant Debug/Fix Files:
+   - clear-cache.php
+   - create-redirect.php
+   - dashboard-redirect.php
+   - debug-profile.php
+   - debug-session.php
+   - diagnose.php
+   - disable-all-caching.php
+   - disable-service-worker.php
+   - fix-cache.php
+   - fix-homepage.php
+   - fix-service-worker.html
+   - fix-service-worker.php
+   - fix-subscription.php
+   - reset-cache.php
+   - session-debug.php
+   - session-fix.php
+   - test-service-worker.html
+   - unregister-sw.html
+
+4. Redundant Include Files:
+   - db_connect_fixed.php
+   - db_connect_service.php
+
+CLEANUP PROCESS:
+1. Backup all files to be removed
+2. Remove redundant files
+3. Ensure proper references in remaining files
+4. Test application functionality

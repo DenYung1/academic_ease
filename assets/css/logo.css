@@ -1,0 +1,83 @@
+/* AcademicEase Logo Styling */
+.ae-logo-container {
+    display: flex;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+}
+
+.ae-logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #4285F4, #34A853);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ae-logo-icon::before {
+    content: 'A';
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.ae-logo-icon::after {
+    content: 'E';
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    font-weight: bold;
+    position: absolute;
+    bottom: 2px;
+    right: 3px;
+    line-height: 1;
+}
+
+.ae-logo-text {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.ae-academic {
+    color: #4285F4;
+}
+
+.ae-ease {
+    color: #34A853;
+}
+
+/* Favicon */
+.ae-favicon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #4285F4, #34A853);
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.ae-favicon::before {
+    content: 'A';
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.ae-favicon::after {
+    content: 'E';
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    font-weight: bold;
+    position: absolute;
+    bottom: 1px;
+    right: 2px;
+    line-height: 1;
+}

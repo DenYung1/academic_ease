@@ -1,0 +1,361 @@
+[
+    {
+        "user_id": "5243243a-14d8-43ab-a5f5-8ebe6bd8bbe7",
+        "quiz_id": "quiz_6830b7424ad41_1748023106",
+        "score": 0,
+        "max_score": 5,
+        "percentage": 0,
+        "completion_date": "2025-05-23T18:17:07+00:00",
+        "result_id": "result_6830bba3559183.11384272"
+    },
+    {
+        "user_id": "5243243a-14d8-43ab-a5f5-8ebe6bd8bbe7",
+        "quiz_id": "quiz_6830b9edb4427_1748023789",
+        "score": 0,
+        "max_score": 5,
+        "percentage": 0,
+        "completion_date": "2025-05-23T18:52:47+00:00",
+        "answers": {
+            "quiz_6830b9edb4427_1748023789_q1": "25",
+            "quiz_6830b9edb4427_1748023789_q2": "12",
+            "quiz_6830b9edb4427_1748023789_q3": "45",
+            "quiz_6830b9edb4427_1748023789_q4": "25",
+            "quiz_6830b9edb4427_1748023789_q5": "45"
+        },
+        "question_results": {
+            "quiz_6830b9edb4427_1748023789_q1": {
+                "user_answer": "25",
+                "correct_answer": "5",
+                "is_correct": false
+            },
+            "quiz_6830b9edb4427_1748023789_q2": {
+                "user_answer": "12",
+                "correct_answer": "60",
+                "is_correct": false
+            },
+            "quiz_6830b9edb4427_1748023789_q3": {
+                "user_answer": "45",
+                "correct_answer": "37",
+                "is_correct": false
+            },
+            "quiz_6830b9edb4427_1748023789_q4": {
+                "user_answer": "25",
+                "correct_answer": "9",
+                "is_correct": false
+            },
+            "quiz_6830b9edb4427_1748023789_q5": {
+                "user_answer": "45",
+                "correct_answer": "32",
+                "is_correct": false
+            }
+        },
+        "quiz_title": "JHS Mathematics - Short Answer Quiz",
+        "subject": "mathematics",
+        "level": "jhs",
+        "result_id": "result_6830c3ffa81d70.62181282"
+    },
+    {
+        "user_id": "5243243a-14d8-43ab-a5f5-8ebe6bd8bbe7",
+        "quiz_id": "683103893eb04",
+        "score": 0,
+        "max_score": 5,
+        "percentage": 0,
+        "completion_date": "2025-05-23T23:27:32+00:00",
+        "answers": {
+            "683103893eb04_q1": "B",
+            "683103893eb04_q2": "B",
+            "683103893eb04_q3": "A",
+            "683103893eb04_q4": "mean ",
+            "683103893eb04_q5": "C"
+        },
+        "question_results": {
+            "683103893eb04_q1": {
+                "user_answer": "B",
+                "correct_answer": "9",
+                "is_correct": false
+            },
+            "683103893eb04_q2": {
+                "user_answer": "B",
+                "correct_answer": "9.5",
+                "is_correct": false
+            },
+            "683103893eb04_q3": {
+                "user_answer": "A",
+                "correct_answer": "1\/2",
+                "is_correct": false
+            },
+            "683103893eb04_q4": {
+                "user_answer": "mean ",
+                "correct_answer": null,
+                "is_correct": false
+            },
+            "683103893eb04_q5": {
+                "user_answer": "C",
+                "correct_answer": "7\/12",
+                "is_correct": false
+            }
+        },
+        "quiz_title": "JHS Mathematics - Statistics and Probability [2025-05-23 23:23:53]",
+        "subject": "mathematics",
+        "level": "jhs",
+        "result_id": "result_68310464189128.21431486"
+    },
+    {
+        "user_id": "5243243a-14d8-43ab-a5f5-8ebe6bd8bbe7",
+        "quiz_id": "6831038917420",
+        "score": 0,
+        "max_score": 2,
+        "percentage": 0,
+        "completion_date": "2025-05-23T23:29:37+00:00",
+        "answers": {
+            "6831038917420_q1": "5",
+            "6831038917420_q2": "7"
+        },
+        "question_results": {
+            "6831038917420_q1": {
+                "user_answer": "5",
+                "correct_answer": "3",
+                "is_correct": false
+            },
+            "6831038917420_q2": {
+                "user_answer": "7",
+                "correct_answer": "8",
+                "is_correct": false
+            }
+        },
+        "quiz_title": "JHS Mathematics - Algebra [2025-05-23 23:23:53]",
+        "subject": "mathematics",
+        "level": "jhs",
+        "result_id": "result_683104e1c10b50.69742463"
+    },
+    {
+        "user_id": "5243243a-14d8-43ab-a5f5-8ebe6bd8bbe7",
+        "quiz_id": "683103894c99f",
+        "score": 0,
+        "max_score": 5,
+        "percentage": 0,
+        "completion_date": "2025-05-23T23:39:09+00:00",
+        "answers": {
+            "683103894c99f_q1": "C",
+            "683103894c99f_q2": "H20",
+            "683103894c99f_q3": "physical",
+            "683103894c99f_q4": "A",
+            "683103894c99f_q5": "A"
+        },
+        "question_results": {
+            "683103894c99f_q1": {
+                "user_answer": "C",
+                "correct_answer": "Water",
+                "is_correct": false
+            },
+            "683103894c99f_q2": {
+                "user_answer": "H20",
+                "correct_answer": "7",
+                "is_correct": false
+            },
+            "683103894c99f_q3": {
+                "user_answer": "physical",
+                "correct_answer": null,
+                "is_correct": false
+            },
+            "683103894c99f_q4": {
+                "user_answer": "A",
+                "correct_answer": "Flammability",
+                "is_correct": false
+            },
+            "683103894c99f_q5": {
+                "user_answer": "A",
+                "correct_answer": "H\u2082O",
+                "is_correct": false
+            }
+        },
+        "quiz_title": "JHS Science - Basic Chemistry [2025-05-23 23:23:53]",
+        "subject": "science",
+        "level": "jhs",
+        "result_id": "result_6831071d596a70.74227972"
+    },
+    {
+        "user_id": "5243243a-14d8-43ab-a5f5-8ebe6bd8bbe7",
+        "quiz_id": "683103894c99f",
+        "score": 1,
+        "max_score": 5,
+        "percentage": 20,
+        "completion_date": "2025-05-23T23:44:42+00:00",
+        "answers": {
+            "683103894c99f_q1": "C",
+            "683103894c99f_q2": "7",
+            "683103894c99f_q3": "physical",
+            "683103894c99f_q4": "C",
+            "683103894c99f_q5": "A"
+        },
+        "question_results": {
+            "683103894c99f_q1": {
+                "user_answer": "C",
+                "correct_answer": "Water",
+                "is_correct": false
+            },
+            "683103894c99f_q2": {
+                "user_answer": "7",
+                "correct_answer": "7",
+                "is_correct": true
+            },
+            "683103894c99f_q3": {
+                "user_answer": "physical",
+                "correct_answer": null,
+                "is_correct": false
+            },
+            "683103894c99f_q4": {
+                "user_answer": "C",
+                "correct_answer": "Flammability",
+                "is_correct": false
+            },
+            "683103894c99f_q5": {
+                "user_answer": "A",
+                "correct_answer": "H\u2082O",
+                "is_correct": false
+            }
+        },
+        "quiz_title": "JHS Science - Basic Chemistry [2025-05-23 23:23:53]",
+        "subject": "science",
+        "level": "jhs",
+        "result_id": "result_6831086ad46da4.61404877"
+    },
+    {
+        "user_id": "5243243a-14d8-43ab-a5f5-8ebe6bd8bbe7",
+        "quiz_id": "683103894c99f",
+        "score": 3,
+        "max_score": 5,
+        "percentage": 60,
+        "completion_date": "2025-05-23T23:51:07+00:00",
+        "answers": {
+            "683103894c99f_q1": "C",
+            "683103894c99f_q2": "7",
+            "683103894c99f_q3": "physical",
+            "683103894c99f_q4": "C",
+            "683103894c99f_q5": "A"
+        },
+        "question_results": {
+            "683103894c99f_q1": {
+                "user_answer": "C",
+                "correct_answer": "Water",
+                "is_correct": true
+            },
+            "683103894c99f_q2": {
+                "user_answer": "7",
+                "correct_answer": "7",
+                "is_correct": false
+            },
+            "683103894c99f_q3": {
+                "user_answer": "physical",
+                "correct_answer": null,
+                "is_correct": false
+            },
+            "683103894c99f_q4": {
+                "user_answer": "C",
+                "correct_answer": "Flammability",
+                "is_correct": true
+            },
+            "683103894c99f_q5": {
+                "user_answer": "A",
+                "correct_answer": "H\u2082O",
+                "is_correct": true
+            }
+        },
+        "quiz_title": "JHS Science - Basic Chemistry [2025-05-23 23:23:53]",
+        "subject": "science",
+        "level": "jhs",
+        "result_id": "result_683109eb35f4e0.03436668"
+    },
+    {
+        "user_id": "5243243a-14d8-43ab-a5f5-8ebe6bd8bbe7",
+        "quiz_id": "683103894c99f",
+        "score": 3,
+        "max_score": 5,
+        "percentage": 60,
+        "completion_date": "2025-05-24T00:02:40+00:00",
+        "answers": {
+            "683103894c99f_q1": "C",
+            "683103894c99f_q2": "7",
+            "683103894c99f_q3": "physical",
+            "683103894c99f_q4": "C",
+            "683103894c99f_q5": "A"
+        },
+        "question_results": {
+            "683103894c99f_q1": {
+                "user_answer": "C",
+                "correct_answer": "Water",
+                "is_correct": true
+            },
+            "683103894c99f_q2": {
+                "user_answer": "7",
+                "correct_answer": "7",
+                "is_correct": false
+            },
+            "683103894c99f_q3": {
+                "user_answer": "physical",
+                "correct_answer": null,
+                "is_correct": false
+            },
+            "683103894c99f_q4": {
+                "user_answer": "C",
+                "correct_answer": "Flammability",
+                "is_correct": true
+            },
+            "683103894c99f_q5": {
+                "user_answer": "A",
+                "correct_answer": "H\u2082O",
+                "is_correct": true
+            }
+        },
+        "quiz_title": "JHS Science - Basic Chemistry [2025-05-23 23:23:53]",
+        "subject": "science",
+        "level": "jhs",
+        "result_id": "result_68310ca032ad41.90225858"
+    },
+    {
+        "user_id": "5243243a-14d8-43ab-a5f5-8ebe6bd8bbe7",
+        "quiz_id": "683103894c99f",
+        "score": 3,
+        "max_score": 5,
+        "percentage": 60,
+        "completion_date": "2025-05-24T00:06:38+00:00",
+        "answers": {
+            "683103894c99f_q1": "C",
+            "683103894c99f_q2": "7",
+            "683103894c99f_q3": "physical",
+            "683103894c99f_q4": "C",
+            "683103894c99f_q5": "A"
+        },
+        "question_results": {
+            "683103894c99f_q1": {
+                "user_answer": "C",
+                "correct_answer": "Water",
+                "is_correct": true
+            },
+            "683103894c99f_q2": {
+                "user_answer": "7",
+                "correct_answer": "7",
+                "is_correct": false
+            },
+            "683103894c99f_q3": {
+                "user_answer": "physical",
+                "correct_answer": null,
+                "is_correct": false
+            },
+            "683103894c99f_q4": {
+                "user_answer": "C",
+                "correct_answer": "Flammability",
+                "is_correct": true
+            },
+            "683103894c99f_q5": {
+                "user_answer": "A",
+                "correct_answer": "H\u2082O",
+                "is_correct": true
+            }
+        },
+        "quiz_title": "JHS Science - Basic Chemistry [2025-05-23 23:23:53]",
+        "subject": "science",
+        "level": "jhs",
+        "result_id": "result_68310d8e69cb84.05443691"
+    }
+]

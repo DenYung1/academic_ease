@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - Academic Ease</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        
+        .offline-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .offline-illustration {
+            max-width: 300px;
+            margin-bottom: 30px;
+        }
+        
+        .offline-card {
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .cached-content {
+            margin-top: 30px;
+        }
+        
+        .cached-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #e9ecef;
+            transition: all 0.2s;
+        }
+        
+        .cached-item:hover {
+            background-color: #dee2e6;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container offline-container">
+        <div class="text-center mb-4">
+            <img src="../assets/img/logo.png" alt="Academic Ease Logo" height="60">
+        </div>
+        
+        <div class="card offline-card">
+            <div class="card-body text-center p-4">
+                <img src="../assets/img/offline.svg" alt="Offline Illustration" class="offline-illustration">
+                
+                <h2 class="mb-3">You're Offline</h2>
+                <p class="lead mb-4">It seems you don't have an internet connection right now. Some features may be limited while you're offline.</p>
+                
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" onclick="location.reload()">
+                        <i class="bi bi-arrow-clockwise me-2"></i> Try Again
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cached-content">
+            <h4 class="mb-3">Available Offline Content</h4>
+            <div id="cached-items-container">
+                <!-- Cached items will be populated here by JavaScript -->
+                <div class="text-center py-4 text-muted">
+                    <div class="spinner-border spinner-border-sm me-2" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    Checking for available content...
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('cached-items-container');
+            
+            // Check for cached pages
+            if ('caches' in window) {
+                caches.open('academic-ease-v1').then(cache => {
+                    cache.keys().then(keys => {
+                        if (keys.length > 0) {
+                            container.innerHTML = '';
+                            
+                            // Filter out non-HTML resources
+                            const htmlPages = keys.filter(request => {
+                                const url = new URL(request.url);
+                                return url.pathname.endsWith('.php') || url.pathname.endsWith('.html') || url.pathname === '/';
+                            });
+                            
+                            // Create links for cached pages
+                            htmlPages.forEach(request => {
+                                const url = new URL(request.url);
+                                let pageName = url.pathname;
+                                
+                                // Format page name
+                                if (pageName === '/') {
+                                    pageName = 'Home';
+                                } else {
+                                    pageName = pageName.replace(/\//g, '').replace(/\.php|\.html/g, '');
+                                    pageName = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+                                    
+                                    // Add spaces before capital letters
+                                    pageName = pageName.replace(/([A-Z])/g, ' $1').trim();
+                                }
+                                
+                                const item = document.createElement('a');
+                                item.href = url.pathname;
+                                item.className = 'cached-item d-block text-decoration-none text-dark';
+                                item.innerHTML = `
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-text me-3"></i>
+                                        <div>
+                                            <strong>${pageName}</strong>
+                                        </div>
+                                        <i class="bi bi-chevron-right ms-auto"></i>
+                                    </div>
+                                `;
+                                
+                                container.appendChild(item);
+                            });
+                            
+                            // If no HTML pages found
+                            if (htmlPages.length === 0) {
+                                container.innerHTML = `
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle-fill me-2"></i>
+                                        No cached pages available. Connect to the internet to browse content.
+                                    </div>
+                                `;
+                            }
+                        } else {
+                            container.innerHTML = `
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                    No cached content available. Connect to the internet to browse content.
+                                </div>
+                            `;
+                        }
+                    });
+                });
+                
+                // Check for study materials
+                caches.open('academic-ease-study-v1').then(cache => {
+                    cache.keys().then(keys => {
+                        if (keys.length > 0) {
+                            const studySection = document.createElement('div');
+                            studySection.innerHTML = `
+                                <h5 class="mt-4 mb-3">Study Materials</h5>
+                                <div id="study-materials-container"></div>
+                            `;
+                            container.appendChild(studySection);
+                            
+                            const studyContainer = studySection.querySelector('#study-materials-container');
+                            
+                            keys.forEach(request => {
+                                const url = new URL(request.url);
+                                const fileName = url.pathname.split('/').pop();
+                                
+                                const item = document.createElement('a');
+                                item.href = url.pathname;
+                                item.className = 'cached-item d-block text-decoration-none text-dark';
+                                item.innerHTML = `
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-pdf me-3"></i>
+                                        <div>
+                                            <strong>${fileName}</strong>
+                                        </div>
+                                        <i class="bi bi-chevron-right ms-auto"></i>
+                                    </div>
+                                `;
+                                
+                                studyContainer.appendChild(item);
+                            });
+                        }
+                    });
+                });
+            } else {
+                container.innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Your browser doesn't support caching. Please use a modern browser.
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

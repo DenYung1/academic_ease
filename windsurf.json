@@ -1,0 +1,13 @@
+{
+  "type": "php",
+  "version": "8.1",
+  "webroot": "public",
+  "env": {
+    "APP_ENV": "production",
+    "APP_NAME": "Academic Ease",
+    "APP_VERSION": "1.0.0",
+    "APP_URL": "https://academic-ease.windsurf.build",
+    "APP_EMAIL": "info@academicease.com",
+    "DEPLOY_TIMESTAMP": "2025-05-24T20:57:20+01:00"
+  }
+}

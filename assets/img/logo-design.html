@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcademicEase Logo</title>
+    <link rel="stylesheet" href="../css/logo.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .logo-showcase {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .logo-section {
+            margin-bottom: 40px;
+        }
+        
+        h2 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #4285F4;
+        }
+        
+        .logo-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-variants {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .variant {
+            text-align: center;
+        }
+        
+        .variant-title {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .color-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .color-box {
+            text-align: center;
+        }
+        
+        .color-sample {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .color-value {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .blue {
+            background-color: #4285F4;
+        }
+        
+        .green {
+            background-color: #34A853;
+        }
+        
+        /* Custom sizes for demo */
+        .ae-logo-container.large .ae-logo-icon {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .ae-logo-container.large .ae-logo-icon::before {
+            font-size: 36px;
+        }
+        
+        .ae-logo-container.large .ae-logo-icon::after {
+            font-size: 24px;
+            bottom: 3px;
+            right: 5px;
+        }
+        
+        .ae-logo-container.large .ae-logo-text {
+            font-size: 28px;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-showcase">
+        <h1>AcademicEase Logo Design</h1>
+        
+        <div class="logo-section">
+            <h2>Primary Logo</h2>
+            <div class="logo-display">
+                <div class="ae-logo-container large">
+                    <div class="ae-logo-icon"></div>
+                    <div class="ae-logo-text">
+                        <span class="ae-academic">Academic</span><span class="ae-ease">Ease</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="logo-section">
+            <h2>Logo Variants</h2>
+            <div class="logo-variants">
+                <div class="variant">
+                    <div class="ae-logo-container">
+                        <div class="ae-logo-icon"></div>
+                        <div class="ae-logo-text">
+                            <span class="ae-academic">Academic</span><span class="ae-ease">Ease</span>
+                        </div>
+                    </div>
+                    <div class="variant-title">Standard Size</div>
+                </div>
+                
+                <div class="variant">
+                    <div class="ae-logo-icon"></div>
+                    <div class="variant-title">Icon Only</div>
+                </div>
+                
+                <div class="variant">
+                    <div class="ae-favicon"></div>
+                    <div class="variant-title">Favicon</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="logo-section">
+            <h2>Color Palette</h2>
+            <div class="color-info">
+                <div class="color-box">
+                    <div class="color-sample blue"></div>
+                    <div class="color-value">#4285F4</div>
+                    <div class="color-name">Academic Blue</div>
+                </div>
+                
+                <div class="color-box">
+                    <div class="color-sample green"></div>
+                    <div class="color-value">#34A853</div>
+                    <div class="color-name">Ease Green</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

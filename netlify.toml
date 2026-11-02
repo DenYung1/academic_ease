@@ -1,0 +1,34 @@
+[build]
+  base = "."
+  publish = "public"
+  command = "# no build command needed for PHP"
+
+[build.environment]
+  PHP_VERSION = "8.1"
+
+# Redirect all requests to the index.php file
+[[redirects]]
+  from = "/*"
+  to = "/index.php"
+  status = 200
+
+# Specific redirect for PHP files
+[[redirects]]
+  from = "/*.php"
+  to = "/:splat"
+  status = 200
+
+# Serve static assets directly
+[[redirects]]
+  from = "/assets/*"
+  to = "/assets/:splat"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Cache-Control = "public, max-age=86400"
+    Referrer-Policy = "strict-origin-when-cross-origin"

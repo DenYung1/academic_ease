@@ -1,0 +1,329 @@
+/* Enhanced UI for AcademicEase
+   Addressing:
+   1. Mobile Experience
+   2. Visual Hierarchy
+   3. Engagement Elements
+   4. Personalization
+*/
+
+/* ===== 1. MOBILE EXPERIENCE IMPROVEMENTS ===== */
+
+/* Larger touch targets on mobile */
+@media (max-width: 767.98px) {
+    .btn, .nav-link, .dropdown-item {
+        padding: 12px 16px;
+        margin-bottom: 8px;
+    }
+    
+    /* Improved spacing for form elements */
+    input, select, textarea, .form-control {
+        font-size: 16px !important; /* Prevents iOS zoom on focus */
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+    
+    /* Better card spacing on mobile */
+    .card {
+        margin-bottom: 20px;
+    }
+    
+    /* Simplified tables for mobile */
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
+    
+    /* Collapsible sections for dense content */
+    .mobile-collapsible .card-body {
+        display: none;
+    }
+    
+    .mobile-collapsible .card-header {
+        cursor: pointer;
+        position: relative;
+    }
+    
+    .mobile-collapsible .card-header:after {
+        content: '+';
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px;
+        font-weight: bold;
+    }
+    
+    .mobile-collapsible.active .card-header:after {
+        content: '-';
+    }
+    
+    .mobile-collapsible.active .card-body {
+        display: block;
+    }
+}
+
+/* ===== 2. VISUAL HIERARCHY IMPROVEMENTS ===== */
+
+/* Section dividers */
+.section-divider {
+    border-bottom: 1px solid #e9ecef;
+    margin: 30px 0;
+    position: relative;
+}
+
+.section-divider h3 {
+    background: white;
+    display: inline-block;
+    padding-right: 15px;
+    margin-bottom: -12px;
+    color: #4285F4;
+    font-weight: 600;
+}
+
+/* Card emphasis for important information */
+.card-emphasis {
+    border-left: 4px solid #4285F4;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-emphasis:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Priority indicators */
+.priority-high {
+    border-left: 4px solid #dc3545;
+}
+
+.priority-medium {
+    border-left: 4px solid #ffc107;
+}
+
+.priority-low {
+    border-left: 4px solid #28a745;
+}
+
+/* Dashboard sections */
+.dashboard-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.dashboard-section-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.dashboard-section-title i {
+    margin-right: 10px;
+    color: #4285F4;
+}
+
+/* ===== 3. ENGAGEMENT ELEMENTS ===== */
+
+/* Subtle animations */
+.hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress animations */
+@keyframes progressFill {
+    from { width: 0; }
+    to { width: var(--final-width); }
+}
+
+.progress-bar-animated {
+    animation: progressFill 1s ease-out forwards;
+}
+
+/* Achievement badges */
+.achievement-badge {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    border: 2px solid #dee2e6;
+    position: relative;
+    margin-right: 5px;
+    transition: all 0.3s ease;
+}
+
+.achievement-badge.earned {
+    background-color: #4285F4;
+    border-color: #0d6efd;
+}
+
+.achievement-badge.earned:after {
+    content: '✓';
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+}
+
+.achievement-badge:hover {
+    transform: scale(1.2);
+}
+
+/* Celebration effects */
+.celebration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    display: none;
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #4285F4;
+    opacity: 0.8;
+    animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* ===== 4. PERSONALIZATION ===== */
+
+/* Theme options */
+.theme-light {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --card-bg: #ffffff;
+    --border-color: #dee2e6;
+}
+
+.theme-dark {
+    --bg-color: #343a40;
+    --text-color: #f8f9fa;
+    --card-bg: #495057;
+    --border-color: #6c757d;
+}
+
+.theme-sepia {
+    --bg-color: #f8f0e3;
+    --text-color: #5b4636;
+    --card-bg: #fefbf7;
+    --border-color: #d3c6b6;
+}
+
+body.custom-theme {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+body.custom-theme .card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+/* Font size adjustments */
+.font-size-small {
+    font-size: 0.9rem;
+}
+
+.font-size-medium {
+    font-size: 1rem;
+}
+
+.font-size-large {
+    font-size: 1.1rem;
+}
+
+/* Welcome message */
+.welcome-message {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    background-color: #e8f4fe;
+    border-left: 4px solid #4285F4;
+    display: flex;
+    align-items: center;
+}
+
+.welcome-message .user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #4285F4;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-right: 15px;
+}
+
+.welcome-message .message-content h4 {
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.welcome-message .message-content p {
+    margin-bottom: 0;
+    color: #666;
+}
+
+/* Study recommendations */
+.recommendation-card {
+    border-left: 4px solid #34A853;
+    margin-bottom: 15px;
+    transition: transform 0.2s ease;
+}
+
+.recommendation-card:hover {
+    transform: translateX(5px);
+}
+
+.recommendation-card .card-header {
+    background-color: rgba(52, 168, 83, 0.1);
+    font-weight: 600;
+}
+
+/* Streak indicator */
+.streak-counter {
+    display: inline-flex;
+    align-items: center;
+    background-color: #fef9e6;
+    border-radius: 20px;
+    padding: 5px 15px;
+    margin-bottom: 15px;
+}
+
+.streak-counter i {
+    color: #ffc107;
+    margin-right: 8px;
+}
+
+.streak-counter span {
+    font-weight: 600;
+    color: #6c757d;
+}
+
+/* JavaScript for the enhancements will be in a separate file */

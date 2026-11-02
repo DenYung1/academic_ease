@@ -1,0 +1,159 @@
+/**
+ * Mobile-specific enhancements for AcademicEase
+ * Improves responsiveness and touch interactions on mobile devices
+ */
+
+/* Base mobile improvements */
+@media (max-width: 767.98px) {
+    /* Increase touch target sizes for better mobile usability */
+    .btn, 
+    .nav-link,
+    .dropdown-item,
+    input[type="radio"],
+    input[type="checkbox"],
+    select {
+        min-height: 44px; /* Apple's recommended minimum touch target size */
+        padding: 10px 15px;
+    }
+    
+    /* Improve form elements on mobile */
+    input, select, textarea {
+        font-size: 16px !important; /* Prevents iOS zoom on focus */
+    }
+    
+    /* Adjust spacing for mobile */
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    /* Make tables responsive */
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Improve navbar on mobile */
+    .navbar-nav {
+        margin-top: 10px;
+    }
+    
+    .navbar-nav .nav-item {
+        margin-bottom: 5px;
+    }
+    
+    /* Adjust card layouts for mobile */
+    .card {
+        margin-bottom: 20px;
+    }
+    
+    /* Scroll to top button */
+    .scroll-to-top-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--bs-primary, #0d6efd);
+        color: white;
+        border: none;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .scroll-to-top-btn.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .scroll-to-top-btn:hover {
+        background-color: var(--bs-primary-dark, #0a58ca);
+        transform: translateY(-3px);
+    }
+    
+    /* Improve subject filters on mobile */
+    .subject-filter {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .subject-filter .form-check {
+        flex: 0 0 calc(50% - 10px);
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 575.98px) {
+    /* Further adjustments for very small screens */
+    h1 {
+        font-size: 1.8rem !important;
+    }
+    
+    h2 {
+        font-size: 1.5rem !important;
+    }
+    
+    /* Adjust study materials and quizzes layout */
+    .study-material-card .card-body,
+    .quiz-card .card-body {
+        padding: 15px;
+    }
+    
+    /* Optimize AI assistant chat for small screens */
+    .message {
+        max-width: 95%;
+        padding: 10px;
+    }
+    
+    /* Make filter dropdowns full width on mobile */
+    .filter-row .col-md-4 {
+        margin-bottom: 10px;
+    }
+    
+    /* Improve modal display on small screens */
+    .modal-dialog {
+        margin: 10px;
+        width: calc(100% - 20px);
+        max-width: none;
+    }
+}
+
+/* Touch-specific improvements */
+@media (pointer: coarse) {
+    /* Styles for touch devices */
+    .btn {
+        /* Add slight delay to prevent accidental taps */
+        touch-action: manipulation;
+    }
+    
+    /* Improve scrolling */
+    .scrollable-content {
+        -webkit-overflow-scrolling: touch;
+        overflow-y: auto;
+    }
+}
+
+/* Reduce animations on mobile for better performance */
+@media (max-width: 767.98px) {
+    * {
+        animation-duration: 0.1s !important;
+        transition-duration: 0.1s !important;
+    }
+    
+    .card:hover {
+        transform: none !important;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05) !important;
+    }
+}

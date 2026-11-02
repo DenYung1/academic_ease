@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#f8f9fa"/>
+  <text x="100" y="100" font-family="Arial" font-size="16" text-anchor="middle" fill="#6c757d">Offline</text>
+  <path d="M100,50 C77.9,50 60,67.9 60,90 C60,112.1 77.9,130 100,130 C122.1,130 140,112.1 140,90 C140,67.9 122.1,50 100,50 Z M100,120 C83.4,120 70,106.6 70,90 C70,73.4 83.4,60 100,60 C116.6,60 130,73.4 130,90 C130,106.6 116.6,120 100,120 Z" fill="#dc3545"/>
+  <path d="M85,75 L115,105 M115,75 L85,105" stroke="#dc3545" stroke-width="8" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,6 @@
+Title,Description,Topic,Content
+Algebraic Expressions,Basic algebraic expressions and operations,Algebra,"x + y = sum of x and y\nx - y = difference of x and y\nx u00d7 y = product of x and y\nx u00f7 y = quotient of x and y (y u2260 0)\nx^n = x raised to the power of n"
+Quadratic Formula,Formula for solving quadratic equations,Algebra,"For axu00b2 + bx + c = 0 (where a u2260 0):\nx = (-b u00b1 u221a(bu00b2 - 4ac)) / 2a"
+Pythagorean Theorem,Relationship between sides of a right triangle,Geometry,"In a right triangle with legs a and b and hypotenuse c:\nau00b2 + bu00b2 = cu00b2"
+Area of Triangle,Formula for calculating the area of a triangle,Geometry,"Area = (1/2) u00d7 base u00d7 height\nArea = u221a(s(s-a)(s-b)(s-c)) where s = (a+b+c)/2 (Heron's formula)"
+Circle Formulas,Formulas related to circles,Geometry,"Area = u03c0ru00b2\nCircumference = 2u03c0r\nArc length = u03b8r (where u03b8 is in radians)\nSector area = (1/2)u03b8ru00b2 (where u03b8 is in radians)"

@@ -1,0 +1,1201 @@
+<?php
+/**
+ * Generate Standard Quizzes Script
+ * 
+ * This script automatically generates standard quizzes for all subjects
+ * following the Ghana Education Service (GES) standards.
+ */
+
+// Determine the correct path based on how the script is being called
+$base_path = __DIR__ . '/../';
+
+// Include necessary files
+require_once $base_path . 'includes/config.php';
+require_once $base_path . 'includes/db_connect.php';
+require_once $base_path . 'includes/quiz_storage.php';
+
+// Set error reporting for debugging
+ini_set('display_errors', 1);
+error_log('Starting standard quiz generation script');
+
+// Define quiz templates by subject and level
+$quizTemplates = [
+    // JHS Mathematics - Advanced Algebra (Difficult)
+    [
+        'title' => 'JHS Mathematics - Advanced Algebra (Difficult)',
+        'description' => 'A challenging quiz on advanced algebraic concepts for JHS students. This quiz contains both multiple-choice and text input questions.',
+        'subject' => 'mathematics',
+        'level' => 'jhs',
+        'questions' => [
+            [
+                'question_text' => 'Solve for x: 2(3x - 4) - 3(x + 2) = 5x - 12',
+                'answer_type' => 'text',
+                'correct_answer' => '2',
+                'explanation' => 'Expanding the brackets: 6x - 8 - 3x - 6 = 5x - 12. Simplifying: 3x - 14 = 5x - 12. Rearranging: 3x - 5x = -12 + 14. Therefore -2x = 2, so x = -1.',
+                'order' => 1
+            ],
+            [
+                'question_text' => 'If f(x) = 2x² - 3x + 1 and g(x) = x - 2, find f(g(3)).',
+                'answer_type' => 'text',
+                'correct_answer' => '3',
+                'explanation' => 'g(3) = 3 - 2 = 1. Then f(g(3)) = f(1) = 2(1)² - 3(1) + 1 = 2 - 3 + 1 = 0.',
+                'order' => 2
+            ],
+            [
+                'question_text' => 'A sequence follows the pattern: a₁ = 3, aₙ = 2aₙ₋₁ + 1 for n > 1. Find a₄.',
+                'answer_type' => 'text',
+                'correct_answer' => '43',
+                'explanation' => 'a₁ = 3, a₂ = 2(3) + 1 = 7, a₃ = 2(7) + 1 = 15, a₄ = 2(15) + 1 = 31.',
+                'order' => 3
+            ],
+            [
+                'question_text' => 'Which of the following is equivalent to (x² - 9)/(x - 3) for x ≠ 3?',
+                'options' => [
+                    'x - 3',
+                    'x + 3',
+                    '(x - 3)(x + 3)',
+                    'x² + 3x + 9'
+                ],
+                'correct_answer' => 'x + 3',
+                'explanation' => 'x² - 9 = (x - 3)(x + 3). Therefore, (x² - 9)/(x - 3) = (x - 3)(x + 3)/(x - 3) = x + 3.',
+                'order' => 4
+            ],
+            [
+                'question_text' => 'The sum of the interior angles of a regular polygon is 1080°. How many sides does the polygon have?',
+                'answer_type' => 'text',
+                'correct_answer' => '8',
+                'explanation' => 'For a polygon with n sides, the sum of interior angles is (n - 2) × 180°. So (n - 2) × 180° = 1080°. Therefore n - 2 = 6, so n = 8.',
+                'order' => 5
+            ],
+            [
+                'question_text' => 'Explain how to solve a system of linear equations using the elimination method. Provide a step-by-step approach with an example.',
+                'question_type' => 'theory',
+                'model_answer' => 'The elimination method for solving systems of linear equations involves the following steps:\n\n1. Write both equations in standard form (ax + by = c).\n2. Multiply one or both equations by constants to make the coefficients of one variable (either x or y) equal in magnitude but opposite in sign.\n3. Add the equations to eliminate one variable.\n4. Solve for the remaining variable.\n5. Substitute this value back into either original equation to find the other variable.\n6. Check the solution in both original equations.\n\nExample: Solve the system\n2x + 3y = 7\n4x - 5y = 3\n\nStep 1: Both equations are already in standard form.\nStep 2: Multiply the first equation by 2 to get 4x + 6y = 14.\nStep 3: Add this to the second equation: (4x + 6y) + (4x - 5y) = 14 + 3\n8x + y = 17\nStep 4: Solve for x: x = (17 - y)/8\nStep 5: Substitute into the first equation: 2((17 - y)/8) + 3y = 7\nSimplify: (17 - y)/4 + 3y = 7\n17 - y + 12y = 28\n11y = 11\ny = 1\nThen x = (17 - 1)/8 = 2\nStep 6: Check: 2(2) + 3(1) = 7 ✓ and 4(2) - 5(1) = 3 ✓\nSolution: x = 2, y = 1',
+                'order' => 6
+            ],
+            [
+                'question_text' => 'If the area of a circle is 36π square units, what is its circumference?',
+                'options' => [
+                    '6π units',
+                    '12π units',
+                    '18π units',
+                    '36π units'
+                ],
+                'correct_answer' => '12π units',
+                'explanation' => 'If the area is 36π, then πr² = 36π, so r² = 36 and r = 6. The circumference is 2πr = 2π(6) = 12π units.',
+                'order' => 7
+            ],
+            [
+                'question_text' => 'Factorize completely: 3x³ - 12x',
+                'answer_type' => 'text',
+                'correct_answer' => '3x(x-2)(x+2)',
+                'explanation' => '3x³ - 12x = 3x(x² - 4) = 3x(x - 2)(x + 2)',
+                'order' => 8
+            ]
+        ]
+    ],
+    
+    // JHS Mathematics - Advanced Geometry (Difficult)
+    [
+        'title' => 'JHS Mathematics - Advanced Geometry (Difficult)',
+        'description' => 'A challenging quiz on advanced geometric concepts for JHS students. This quiz contains both multiple-choice and text input questions.',
+        'subject' => 'mathematics',
+        'level' => 'jhs',
+        'questions' => [
+            [
+                'question_text' => 'In a right-angled triangle, if one angle is 28°, what is the other non-right angle?',
+                'answer_type' => 'text',
+                'correct_answer' => '62',
+                'explanation' => 'In a triangle, the sum of all angles is 180°. In a right-angled triangle, one angle is 90°. So the sum of the other two angles is 180° - 90° = 90°. If one angle is 28°, the other is 90° - 28° = 62°.',
+                'order' => 1
+            ],
+            [
+                'question_text' => 'The perimeter of a rectangle is 34 cm and its area is 60 cm². Find the length of its diagonal.',
+                'answer_type' => 'text',
+                'correct_answer' => '13',
+                'explanation' => 'Let the length be x and width be y. Then 2x + 2y = 34, so x + y = 17. Also, xy = 60. Using these equations, we can find that x = 10 and y = 7 (or vice versa). The diagonal is √(x² + y²) = √(100 + 49) = √149 = 13 cm.',
+                'order' => 2
+            ],
+            [
+                'question_text' => 'Explain the concept of similar triangles and provide three criteria that can be used to determine if two triangles are similar.',
+                'question_type' => 'theory',
+                'model_answer' => 'Similar triangles are triangles that have the same shape but not necessarily the same size. In similar triangles, corresponding angles are equal and corresponding sides are proportional.\n\nThree criteria to determine if two triangles are similar:\n\n1. Angle-Angle (AA) Criterion: If two angles of one triangle are equal to two angles of another triangle, then the triangles are similar. (Note: Since the sum of angles in a triangle is 180°, if two angles are equal, the third angle must also be equal.)\n\n2. Side-Side-Side (SSS) Criterion: If the three sides of one triangle are proportional to the three sides of another triangle, then the triangles are similar.\n\n3. Side-Angle-Side (SAS) Criterion: If two sides of one triangle are proportional to two sides of another triangle, and the included angles are equal, then the triangles are similar.\n\nExample: Triangle ABC with sides 3, 4, and 5 is similar to triangle DEF with sides 6, 8, and 10 because their sides are in the same ratio (1:2).',
+                'order' => 3
+            ],
+            [
+                'question_text' => 'A cylinder has a radius of 7 cm and a height of 12 cm. What is its volume?',
+                'options' => [
+                    '1848π cm³',
+                    '588π cm³',
+                    '84π cm³',
+                    '168π cm³'
+                ],
+                'correct_answer' => '588π cm³',
+                'explanation' => 'The volume of a cylinder is V = πr²h = π × 7² × 12 = π × 49 × 12 = 588π cm³.',
+                'order' => 4
+            ],
+            [
+                'answer_type' => 'text',
+                'correct_answer' => '4.5',
+                'explanation' => 'This forms a right-angled triangle. The base is |4 - 1| = 3 units and the height is |5 - 2| = 3 units. Area = (1/2) × base × height = (1/2) × 3 × 3 = 4.5 square units.',
+                'order' => 5
+            ]
+        ],
+    
+    // SHS Physics - Advanced Mechanics (Difficult)
+    [
+        'title' => 'SHS Physics - Advanced Mechanics (Difficult)',
+        'description' => 'A challenging quiz on advanced mechanics concepts for SHS students. This quiz contains both multiple-choice and theory questions.',
+        'subject' => 'physics',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question_text' => 'A 2 kg object is moving with a velocity of 5 m/s when it experiences a constant force of 10 N in the direction of motion for 3 seconds. What is its final velocity?',
+                'answer_type' => 'text',
+                'correct_answer' => '20',
+                'explanation' => 'Using the equation v = u + at, where a = F/m = 10/2 = 5 m/s². So v = 5 + 5 × 3 = 5 + 15 = 20 m/s.',
+                'order' => 1
+            ],
+            [
+                'question_text' => 'A projectile is launched with an initial velocity of 40 m/s at an angle of 30° to the horizontal. What is the maximum height reached by the projectile? (Take g = 10 m/s²)',
+                'answer_type' => 'text',
+                'correct_answer' => '20',
+                'explanation' => 'The vertical component of the initial velocity is u sin θ = 40 × sin 30° = 40 × 0.5 = 20 m/s. Maximum height is given by h = (u sin θ)²/(2g) = 20²/(2 × 10) = 400/20 = 20 m.',
+                'order' => 2
+            ],
+            [
+                'question_text' => 'Which of the following is NOT a conserved quantity in an isolated system?',
+                'options' => [
+                    'Linear momentum',
+                    'Angular momentum',
+                    'Mechanical energy in the presence of friction',
+                    'Electric charge'
+                ],
+                'correct_answer' => 'Mechanical energy in the presence of friction',
+                'explanation' => 'In the presence of friction, mechanical energy is converted to heat energy, so it is not conserved. Linear momentum, angular momentum, and electric charge are always conserved in an isolated system.',
+                'order' => 3
+            ],
+            [
+                'question_text' => 'Explain the concept of simple harmonic motion and derive the equation for the period of a simple pendulum. Discuss the assumptions made in this derivation.',
+                'question_type' => 'theory',
+                'model_answer' => 'Simple Harmonic Motion (SHM) is a type of periodic motion where the restoring force is directly proportional to the displacement from the equilibrium position and acts in the opposite direction to the displacement.\n\nMathematically, this is expressed as F = -kx, where F is the restoring force, k is the spring constant, and x is the displacement from equilibrium. This leads to the differential equation d²x/dt² = -(k/m)x, where m is the mass of the object.\n\nThe solution to this equation is x = A cos(ωt + φ), where A is the amplitude, ω = √(k/m) is the angular frequency, and φ is the phase constant.\n\nFor a simple pendulum of length L, the restoring force is F = -mg sin θ, where θ is the angle from the vertical. For small angles, sin θ ≈ θ, so F ≈ -mgθ. Since the arc length s = Lθ, we have F ≈ -mg(s/L) = -(mg/L)s.\n\nComparing with F = -kx, we see that k = mg/L for a simple pendulum. The period is given by T = 2π√(m/k) = 2π√(L/g).\n\nAssumptions made in this derivation:\n1. The angle of oscillation is small (sin θ ≈ θ).\n2. The pendulum bob is a point mass.\n3. The string is massless and inextensible.\n4. There is no air resistance or friction.\n5. The gravitational field is uniform.',
+                'order' => 4
+            ],
+            [
+                'question_text' => 'A uniform rod of mass M and length L is pivoted at one end. What is the moment of inertia about this pivot?',
+                'options' => [
+                    'ML²/3',
+                    'ML²/12',
+                    'ML²/2',
+                    'ML²'
+                ],
+                'correct_answer' => 'ML²/3',
+                'explanation' => 'The moment of inertia of a uniform rod of mass M and length L about its center is ML²/12. Using the parallel axis theorem, the moment of inertia about one end is I = I_center + Md² = ML²/12 + M(L/2)² = ML²/12 + ML²/4 = ML²(1/12 + 1/4) = ML²(3/12 + 1/4) = ML²(3/12 + 3/12) = ML²(6/12) = ML²/2.',
+                'order' => 5
+            ],
+            [
+                'question_text' => 'A satellite orbits Earth at a height of 3600 km. If Earth\'s radius is 6400 km and g at Earth\'s surface is 9.8 m/s², what is the orbital period of the satellite?',
+                'answer_type' => 'text',
+                'correct_answer' => '120',
+                'explanation' => 'The orbital radius is r = 6400 + 3600 = 10000 km = 10⁷ m. The orbital period is T = 2π√(r³/GM), where GM = gr² = 9.8 × (6.4 × 10⁶)² = 9.8 × 4.096 × 10¹³ = 4.01408 × 10¹⁴. So T = 2π√((10⁷)³/(4.01408 × 10¹⁴)) = 2π√(10²¹/(4.01408 × 10¹⁴)) = 2π√(2.49 × 10⁶) = 2π × 1577.97 = 9917.8 seconds ≈ 120 minutes.',
+                'order' => 6
+            ]
+        ]
+    ],
+    
+    // SHS Chemistry - Advanced Reactions (Difficult)
+    [
+        'title' => 'SHS Chemistry - Advanced Reactions (Difficult)',
+        'description' => 'A challenging quiz on advanced chemical reactions and concepts for SHS students. This quiz contains both multiple-choice and theory questions.',
+        'subject' => 'chemistry',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question_text' => 'Calculate the pH of a buffer solution made by mixing 0.2 M acetic acid (CH₃COOH) and 0.3 M sodium acetate (CH₃COONa). The Ka of acetic acid is 1.8 × 10⁻⁵.',
+                'answer_type' => 'text',
+                'correct_answer' => '5.1',
+                'explanation' => 'Using the Henderson-Hasselbalch equation: pH = pKa + log([A⁻]/[HA]). pKa = -log(Ka) = -log(1.8 × 10⁻⁵) = 4.74. pH = 4.74 + log(0.3/0.2) = 4.74 + log(1.5) = 4.74 + 0.18 = 4.92 ≈ 5.1.',
+                'order' => 1
+            ],
+            [
+                'question_text' => 'Which of the following molecules has a non-zero dipole moment?',
+                'options' => [
+                    'CCl₄',
+                    'CO₂',
+                    'CH₃Cl',
+                    'BF₃'
+                ],
+                'correct_answer' => 'CH₃Cl',
+                'explanation' => 'CCl₄ has a tetrahedral structure with symmetrical distribution of Cl atoms, so the dipole moments cancel out. CO₂ is linear and symmetrical. BF₃ has a trigonal planar structure with symmetrical distribution of F atoms. CH₃Cl has a tetrahedral structure but with asymmetrical distribution of atoms, so it has a non-zero dipole moment.',
+                'order' => 2
+            ],
+            [
+                'question_text' => 'Explain the concept of hybridization in molecular orbital theory and discuss the hybridization in ethene (C₂H₄) with reference to its structure and bonding.',
+                'question_type' => 'theory',
+                'model_answer' => 'Hybridization is the mixing of atomic orbitals to form new hybrid orbitals suitable for the pairing of electrons to form chemical bonds. It explains the observed molecular geometries of many molecules that cannot be explained by simple valence bond theory.\n\nIn ethene (C₂H₄), each carbon atom undergoes sp² hybridization. In this process, one s orbital and two p orbitals of the carbon atom mix to form three sp² hybrid orbitals. These hybrid orbitals lie in a plane and are oriented at 120° to each other.\n\nEach carbon atom in ethene has three sp² hybrid orbitals and one unhybridized p orbital. The sp² hybrid orbitals are used to form sigma (σ) bonds: one σ bond between the two carbon atoms and two σ bonds with hydrogen atoms. The unhybridized p orbitals on each carbon atom overlap laterally to form a pi (π) bond.\n\nThis results in a double bond between the carbon atoms, consisting of one σ bond and one π bond. The π bond restricts rotation around the C-C axis, making the molecule planar. The bond angle between the sp² hybrid orbitals is approximately 120°, which is observed in the H-C-H and H-C-C bond angles in ethene.\n\nThe hybridization explains the planar structure of ethene, the restricted rotation around the C=C bond, and the observed bond angles and bond lengths.',
+                'order' => 3
+            ],
+            [
+                'question_text' => 'A gas occupies a volume of 2.5 L at 27°C and 1 atm pressure. What will be its volume at 127°C and 2 atm pressure?',
+                'answer_type' => 'text',
+                'correct_answer' => '1.67',
+                'explanation' => 'Using the combined gas law: P₁V₁/T₁ = P₂V₂/T₂. Converting temperatures to Kelvin: T₁ = 27 + 273 = 300 K, T₂ = 127 + 273 = 400 K. Rearranging to find V₂: V₂ = V₁(P₁/P₂)(T₂/T₁) = 2.5 × (1/2) × (400/300) = 2.5 × 0.5 × 1.33 = 1.67 L.',
+                'order' => 4
+            ],
+            [
+                'question_text' => 'Which of the following is NOT a characteristic of a first-order reaction?',
+                'options' => [
+                    'The half-life is independent of the initial concentration',
+                    'A plot of ln[A] versus time gives a straight line',
+                    'The rate is directly proportional to the square of the concentration',
+                    'The rate constant has units of s⁻¹'
+                ],
+                'correct_answer' => 'The rate is directly proportional to the square of the concentration',
+                'explanation' => 'For a first-order reaction, the rate is directly proportional to the concentration, not the square of the concentration. The rate being proportional to the square of the concentration is a characteristic of a second-order reaction.',
+                'order' => 5
+            ],
+            [
+                'question_text' => 'Calculate the standard cell potential for the reaction: Zn(s) + Cu²⁺(aq) → Zn²⁺(aq) + Cu(s). Given: E°(Zn²⁺/Zn) = -0.76 V and E°(Cu²⁺/Cu) = +0.34 V.',
+                'answer_type' => 'text',
+                'correct_answer' => '1.10',
+                'explanation' => 'The standard cell potential is E° = E°(cathode) - E°(anode) = E°(Cu²⁺/Cu) - E°(Zn²⁺/Zn) = 0.34 - (-0.76) = 0.34 + 0.76 = 1.10 V.',
+                'order' => 6
+            ]
+        ]
+    ],
+    
+    // SHS Biology - Advanced Genetics (Difficult)
+    [
+        'title' => 'SHS Biology - Advanced Genetics (Difficult)',
+        'description' => 'A challenging quiz on advanced genetic concepts for SHS students. This quiz contains both multiple-choice and theory questions.',
+        'subject' => 'biology',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question_text' => 'In a dihybrid cross between two heterozygous parents (AaBb × AaBb), what is the probability of obtaining an offspring with the genotype aabb?',
+                'options' => [
+                    '1/4',
+                    '1/8',
+                    '1/16',
+                    '3/16'
+                ],
+                'correct_answer' => '1/16',
+                'explanation' => 'For each gene, the probability of getting the recessive allele from a heterozygous parent is 1/2. So the probability of getting a from the first parent is 1/2, and from the second parent is also 1/2. Similarly for b. Therefore, the probability of aabb is (1/2 × 1/2) × (1/2 × 1/2) = 1/4 × 1/4 = 1/16.',
+                'order' => 1
+            ],
+            [
+                'question_text' => 'Explain the process of DNA replication, including the enzymes involved and the mechanisms that ensure accuracy. Discuss the significance of semiconservative replication.',
+                'question_type' => 'theory',
+                'model_answer' => 'DNA replication is the process by which DNA makes a copy of itself during cell division. It is semiconservative, meaning that each new DNA molecule contains one original strand and one newly synthesized strand.\n\nThe process begins with the enzyme helicase breaking the hydrogen bonds between the complementary base pairs, unwinding the DNA double helix and creating a replication fork. Single-strand binding proteins attach to the separated strands to prevent them from reannealing.\n\nDNA polymerase III then adds nucleotides to the growing DNA strand, but it can only add nucleotides in the 5\'→3\' direction. This results in continuous synthesis on the leading strand (in the same direction as the replication fork movement) and discontinuous synthesis on the lagging strand (in the opposite direction).\n\nOn the lagging strand, DNA polymerase III synthesizes short fragments called Okazaki fragments. RNA primase adds RNA primers to provide a 3\' end for DNA polymerase III to start synthesis. DNA polymerase I removes the RNA primers and replaces them with DNA. Finally, DNA ligase joins the Okazaki fragments together.\n\nAccuracy is ensured through several mechanisms:\n1. Base-pairing specificity (A with T, G with C)\n2. Proofreading function of DNA polymerase III, which checks each nucleotide after it is added\n3. Mismatch repair systems that correct errors after replication\n\nThe semiconservative nature of DNA replication is significant because it ensures that each new cell receives a DNA molecule containing one strand with the original genetic information, reducing the chance of errors being passed on. It was confirmed by the Meselson-Stahl experiment in 1958, which distinguished it from conservative and dispersive models of replication.',
+                'order' => 2
+            ],
+            [
+                'question_text' => 'A man with blood type A marries a woman with blood type B. They have a child with blood type O. What are the genotypes of the parents?',
+                'options' => [
+                    'AA and BB',
+                    'AO and BO',
+                    'AA and BO',
+                    'AO and BB'
+                ],
+                'correct_answer' => 'AO and BO',
+                'explanation' => 'For a child to have blood type O (genotype OO), both parents must carry the O allele. Since the father has blood type A, his genotype must be AO (not AA). Similarly, the mother with blood type B must have genotype BO (not BB).',
+                'order' => 3
+            ],
+            [
+                'question_text' => 'What is the function of telomerase in eukaryotic cells?',
+                'options' => [
+                    'It catalyzes the addition of nucleotides to the 3\' end of DNA during replication',
+                    'It adds repetitive sequences to the ends of chromosomes to prevent loss of genetic information',
+                    'It removes RNA primers during DNA replication',
+                    'It joins Okazaki fragments during DNA replication'
+                ],
+                'correct_answer' => 'It adds repetitive sequences to the ends of chromosomes to prevent loss of genetic information',
+                'explanation' => 'Telomerase is an enzyme that adds repetitive sequences (TTAGGG in humans) to the ends of chromosomes (telomeres). This prevents the loss of genetic information during replication, as DNA polymerase cannot replicate the very end of a DNA strand (the end-replication problem).',
+                'order' => 4
+            ],
+            [
+                'question_text' => 'In a population in Hardy-Weinberg equilibrium, the frequency of a recessive allele a is 0.3. What is the frequency of the dominant phenotype?',
+                'answer_type' => 'text',
+                'correct_answer' => '0.91',
+                'explanation' => 'If the frequency of allele a is q = 0.3, then the frequency of allele A is p = 1 - q = 1 - 0.3 = 0.7. The frequency of the recessive phenotype (aa) is q² = 0.3² = 0.09. Therefore, the frequency of the dominant phenotype (AA and Aa) is 1 - q² = 1 - 0.09 = 0.91.',
+                'order' => 5
+            ],
+            [
+                'question_text' => 'Describe the process of transcription in eukaryotes, including the role of RNA polymerase and transcription factors. Explain how post-transcriptional modifications affect the final mRNA product.',
+                'question_type' => 'theory',
+                'model_answer' => 'Transcription is the process by which the genetic information in DNA is copied into RNA. In eukaryotes, this process occurs in the nucleus and involves several steps.\n\nThe process begins with the binding of RNA polymerase II and various transcription factors to the promoter region of a gene. Transcription factors are proteins that help position RNA polymerase correctly and regulate when transcription occurs. They bind to specific sequences in the promoter region, such as the TATA box.\n\nOnce positioned, RNA polymerase II unwinds the DNA double helix at the transcription start site, creating a transcription bubble. It then moves along the template strand in the 3\'→5\' direction, synthesizing an RNA molecule in the 5\'→3\' direction according to the base-pairing rules (A pairs with U, G pairs with C).\n\nIn eukaryotes, the initial RNA transcript (pre-mRNA) undergoes several post-transcriptional modifications before leaving the nucleus:\n\n1. 5\' Capping: A modified guanine nucleotide is added to the 5\' end of the pre-mRNA. This cap protects the mRNA from degradation and helps in ribosome binding during translation.\n\n2. 3\' Polyadenylation: A poly(A) tail, consisting of multiple adenine nucleotides, is added to the 3\' end of the pre-mRNA. This tail also protects the mRNA from degradation and aids in export from the nucleus and translation.\n\n3. Splicing: Eukaryotic genes contain non-coding sequences called introns, which are removed, and coding sequences called exons, which are joined together. This process is catalyzed by spliceosomes, which are complexes of proteins and RNA molecules. Alternative splicing can produce different mRNA molecules from the same pre-mRNA, increasing the diversity of proteins that can be produced from a single gene.\n\nThese post-transcriptional modifications result in a mature mRNA molecule that is exported from the nucleus to the cytoplasm, where it can be translated into a protein. The modifications ensure the stability of the mRNA and regulate gene expression at the post-transcriptional level.',
+                'order' => 6
+            ]
+        ]
+    ],
+    
+    // SHS Science - Advanced Biology (Difficult)
+    [
+        'title' => 'SHS Science - Advanced Biology (Difficult)',
+        'description' => 'A challenging quiz on advanced biology concepts for SHS students. This quiz contains both multiple-choice and theory questions.',
+        'subject' => 'biology',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question_text' => 'What is the primary function of the mitochondria in a cell?',
+                'options' => [
+                    'Protein synthesis',
+                    'Cell signaling',
+                    'Cellular respiration',
+                    'DNA replication'
+                ],
+                'correct_answer' => 'Cellular respiration',
+                'explanation' => 'Mitochondria are often referred to as the powerhouses of the cell because they generate most of the cell\'s supply of adenosine triphosphate (ATP), which is used as a source of chemical energy.',
+                'order' => 1
+            ],
+            [
+                'question_text' => 'Explain the process of photosynthesis, including the light-dependent reactions and the Calvin cycle.',
+                'question_type' => 'theory',
+                'model_answer' => 'Photosynthesis is the process by which green plants, algae, and some bacteria convert light energy from the sun into chemical energy in the form of glucose.\n\nThe process occurs in specialized organelles called chloroplasts and can be divided into two stages: the light-dependent reactions and the Calvin cycle.\n\nLight-dependent reactions:\n\n1. Light absorption: Light is absorbed by pigments such as chlorophyll and other accessory pigments in the thylakoid membrane.\n\n2. Excitation of electrons: The absorbed light energy excites electrons, which are then transferred to a special molecule called an electron acceptor.\n\n3. Transfer of electrons: The electrons are passed along a series of electron carriers in the thylakoid membrane, ultimately resulting in the formation of a proton gradient across the membrane.\n\n4. ATP synthesis: The proton gradient is used to produce ATP from ADP and Pi through the process of chemiosmosis.\n\nCalvin cycle:\n\n1. Carbon fixation: CO₂ is fixed into a three-carbon molecule called 3-phosphoglycerate (3-PGA) via the enzyme RuBisCO.\n\n2. Reduction: 3-PGA is reduced to form glyceraldehyde 3-phosphate (G3P) using the ATP and NADPH produced in the light-dependent reactions.\n\n3. Regeneration: The G3P molecules are used to regenerate the RuBP molecule, which is necessary for the cycle to continue.\n\nThe overall equation for photosynthesis is:\n\n6 CO₂ + 6 H₂O + light energy → C₆H₁₂O₆ (glucose) + 6 O₂',
+                'order' => 2
+            ],
+            [
+                'question_text' => 'What is the difference between a prokaryotic cell and a eukaryotic cell?',
+                'options' => [
+                    'Prokaryotic cells have a true nucleus, while eukaryotic cells do not',
+                    'Prokaryotic cells lack a true nucleus, while eukaryotic cells have one',
+                    'Prokaryotic cells are smaller than eukaryotic cells',
+                    'Prokaryotic cells have a cell wall, while eukaryotic cells do not'
+                ],
+                'correct_answer' => 'Prokaryotic cells lack a true nucleus, while eukaryotic cells have one',
+                'explanation' => 'Prokaryotic cells, such as bacteria, lack a true nucleus and other membrane-bound organelles. Eukaryotic cells, such as plants and animals, have a true nucleus and other membrane-bound organelles.',
+                'order' => 3
+            ],
+            [
+                'question_text' => 'Explain the process of meiosis, including the stages of prophase, metaphase, anaphase, and telophase.',
+                'question_type' => 'theory',
+                'model_answer' => 'Meiosis is the process by which sex cells (sperm and egg cells) are produced in eukaryotic organisms. It involves two consecutive cell divisions, meiosis I and meiosis II, which reduce the chromosome number by half and result in the production of four non-identical daughter cells.\n\nMeiosis I:\n\n1. Prophase I: Chromosomes condense and homologous pairs come together in a process called synapsis. Crossing over occurs, resulting in the exchange of genetic material between homologous chromosomes.\n\n2. Metaphase I: Homologous pairs of chromosomes line up at the center of the cell, attached to the spindle fibers.\n\n3. Anaphase I: Homologous pairs of chromosomes separate, moving to opposite poles of the cell.\n\n4. Telophase I: Nuclear envelope reforms around each set of chromosomes, and the cytoplasm divides.\n\nMeiosis II:\n\n1. Prophase II: Chromosomes condense again, and a new spindle forms.\n\n2. Metaphase II: Sister chromatids line up at the center of the cell, attached to the spindle fibers.\n\n3. Anaphase II: Sister chromatids separate, moving to opposite poles of the cell.\n\n4. Telophase II: Nuclear envelope reforms around each set of chromosomes, and the cytoplasm divides.\n\nThe result of meiosis is the production of four non-identical daughter cells, each with half the number of chromosomes as the parent cell.',
+                'order' => 4
+            ],
+            [
+                'question_text' => 'What is the function of the Golgi apparatus in a cell?',
+                'options' => [
+                    'Protein synthesis',
+                    'Cell signaling',
+                    'Protein modification and transport',
+                    'DNA replication'
+                ],
+                'correct_answer' => 'Protein modification and transport',
+                'explanation' => 'The Golgi apparatus is a complex organelle found in eukaryotic cells that is responsible for modifying, sorting, and packaging proteins and lipids for transport out of the cell or to other parts of the cell.',
+                'order' => 5
+            ],
+            [
+                'question_text' => 'Explain the process of natural selection, including the role of genetic variation, mutation, and gene flow.',
+                'question_type' => 'theory',
+                'model_answer' => 'Natural selection is the process by which populations of living organisms adapt and evolve over time in response to environmental pressures. It is a key mechanism of evolution and is based on the idea that individuals with certain traits or characteristics are better suited to their environment and are more likely to survive and reproduce.\n\nGenetic variation is the raw material for natural selection. It arises through mutation, gene flow, and genetic recombination during reproduction. Mutation is the process by which new genetic variants are created through errors during DNA replication or repair. Gene flow is the movement of genes from one population to another, which can introduce new genetic variants into a population.\n\nNatural selection acts on this genetic variation, favoring individuals with traits that are better suited to their environment. These individuals are more likely to survive and reproduce, passing their advantageous traits on to their offspring. Over time, this leads to the evolution of populations that are better adapted to their environment.\n\nThe process of natural selection can be summarized as follows:\n\n1. Genetic variation arises through mutation, gene flow, and genetic recombination.\n\n2. The environment acts on this genetic variation, favoring individuals with certain traits or characteristics.\n\n3. Individuals with advantageous traits are more likely to survive and reproduce, passing their traits on to their offspring.\n\n4. Over time, the population evolves to become better adapted to its environment.',
+                'order' => 6
+            ]
+        ]
+    ],
+    
+    // SHS Science - Advanced Chemistry (Difficult)
+    [
+        'title' => 'SHS Science - Advanced Chemistry (Difficult)',
+        'description' => 'A challenging quiz on advanced chemistry concepts for SHS students. This quiz contains both multiple-choice and theory questions.',
+        'subject' => 'chemistry',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question_text' => 'What is the difference between a strong acid and a weak acid?',
+                'options' => [
+                    'A strong acid is one that completely dissociates in water, while a weak acid is one that only partially dissociates',
+                    'A strong acid is one that has a high pH, while a weak acid is one that has a low pH',
+                    'A strong acid is one that is highly corrosive, while a weak acid is one that is not corrosive',
+                    'A strong acid is one that is highly concentrated, while a weak acid is one that is dilute'
+                ],
+                'correct_answer' => 'A strong acid is one that completely dissociates in water, while a weak acid is one that only partially dissociates',
+                'explanation' => 'A strong acid is one that completely dissociates in water, producing a high concentration of hydrogen ions. A weak acid is one that only partially dissociates in water, producing a lower concentration of hydrogen ions.',
+                'order' => 1
+            ],
+            [
+                'question_text' => 'Explain the concept of chemical equilibrium, including the law of mass action and the equilibrium constant.',
+                'question_type' => 'theory',
+                'model_answer' => 'Chemical equilibrium is a state in which the rates of forward and reverse reactions are equal, and the concentrations of the reactants and products remain constant.\n\nThe law of mass action states that the rate of a reaction is proportional to the product of the concentrations of the reactants. This can be expressed mathematically as:\n\nrate = k[A]ⁿ[B]ᵐ\n\nwhere k is the rate constant, [A] and [B] are the concentrations of the reactants, and n and m are the orders of the reaction with respect to A and B.\n\nThe equilibrium constant (Kc) is a measure of the ratio of the concentrations of the products to the concentrations of the reactants at equilibrium. It is defined as:\n\nKc = [C]ᵈ[D]ᵉ / [A]ⁿ[B]ᵐ\n\nwhere [C] and [D] are the concentrations of the products, and [A] and [B] are the concentrations of the reactants.\n\nThe equilibrium constant is a measure of the extent to which a reaction proceeds. A large value of Kc indicates that the reaction favors the products, while a small value indicates that the reaction favors the reactants.',
+                'order' => 2
+            ],
+            [
+                'question_text' => 'What is the difference between a homogeneous mixture and a heterogeneous mixture?',
+                'options' => [
+                    'A homogeneous mixture is one that has the same composition throughout, while a heterogeneous mixture is one that has different compositions in different parts',
+                    'A homogeneous mixture is one that is uniform in composition, while a heterogeneous mixture is one that is not uniform in composition',
+                    'A homogeneous mixture is one that is highly concentrated, while a heterogeneous mixture is one that is dilute',
+                    'A homogeneous mixture is one that is highly corrosive, while a heterogeneous mixture is one that is not corrosive'
+                ],
+                'correct_answer' => 'A homogeneous mixture is one that has the same composition throughout, while a heterogeneous mixture is one that has different compositions in different parts',
+                'explanation' => 'A homogeneous mixture is one that has the same composition throughout, such as a solution of sugar in water. A heterogeneous mixture is one that has different compositions in different parts, such as a mixture of sand and water.',
+                'order' => 3
+            ],
+            [
+                'question_text' => 'Explain the process of nuclear fission, including the role of neutrons and the production of energy.',
+                'question_type' => 'theory',
+                'model_answer' => 'Nuclear fission is a process in which an atomic nucleus splits into two or more smaller nuclei, releasing a large amount of energy in the process.\n\nThe process begins when a neutron collides with an atomic nucleus, causing it to split into two or more smaller nuclei. This releases more neutrons, which then collide with other nuclei, causing them to split and release even more neutrons. This creates a chain reaction that can release a large amount of energy.\n\nThe energy released in nuclear fission comes from the binding energy that holds the nucleus together. When the nucleus splits, this energy is released as kinetic energy of the fission fragments and as radiation.\n\nNuclear fission is used in nuclear power plants to generate electricity. The heat produced by the fission reaction is used to produce steam, which then drives a turbine to generate electricity.',
+                'order' => 4
+            ],
+            [
+                'question_text' => 'What is the difference between a metal and a nonmetal?',
+                'options' => [
+                    'A metal is an element that is highly reactive, while a nonmetal is an element that is not reactive',
+                    'A metal is an element that is highly conductive, while a nonmetal is an element that is not conductive',
+                    'A metal is an element that is highly malleable, while a nonmetal is an element that is not malleable',
+                    'A metal is an element that is highly ductile, while a nonmetal is an element that is not ductile'
+                ],
+                'correct_answer' => 'A metal is an element that is highly conductive, while a nonmetal is an element that is not conductive',
+                'explanation' => 'A metal is an element that is highly conductive, meaning that it can conduct electricity and heat. Nonmetals are elements that are not conductive, meaning that they cannot conduct electricity and heat.',
+                'order' => 5
+            ],
+            [
+                'question_text' => 'Explain the concept of acid-base chemistry, including the Arrhenius, Bronsted-Lowry, and Lewis definitions of acids and bases.',
+                'question_type' => 'theory',
+                'model_answer' => 'Acid-base chemistry is the study of the reactions between acids and bases. There are three main definitions of acids and bases: the Arrhenius, Bronsted-Lowry, and Lewis definitions.\n\nThe Arrhenius definition states that an acid is a substance that increases the concentration of hydrogen ions (H⁺) in a solution, while a base is a substance that increases the concentration of hydroxide ions (OH⁻).\n\nThe Bronsted-Lowry definition states that an acid is a substance that donates a proton (H⁺), while a base is a substance that accepts a proton.\n\nThe Lewis definition states that an acid is a substance that accepts a pair of electrons, while a base is a substance that donates a pair of electrons.\n\nThese definitions are not mutually exclusive, and many substances can be classified as acids or bases according to more than one definition.',
+                'order' => 6
+            ]
+        ]
+    ],
+    
+    // Text Input Quiz Example
+    [
+        'title' => 'JHS Mathematics - Short Answer Quiz',
+        'description' => 'This quiz requires you to type in your answers. Be precise with your calculations.',
+        'subject' => 'mathematics',
+        'level' => 'jhs',
+        'questions' => [
+            [
+                'question_text' => 'What is the value of x in the equation 3x + 7 = 22?',
+                'answer_type' => 'text',
+                'correct_answer' => '5',
+                'order' => 1
+            ],
+            [
+                'question_text' => 'If a rectangle has a length of 12 cm and a width of 5 cm, what is its area in square centimeters?',
+                'answer_type' => 'text',
+                'correct_answer' => '60',
+                'order' => 2
+            ],
+            [
+                'question_text' => 'What is the next number in the sequence: 2, 5, 10, 17, 26, ?',
+                'answer_type' => 'text',
+                'correct_answer' => '37',
+                'order' => 3
+            ],
+            [
+                'question_text' => 'If y = 2x - 3 and x = 6, what is the value of y?',
+                'answer_type' => 'text',
+                'correct_answer' => '9',
+                'order' => 4
+            ],
+            [
+                'question_text' => 'What is the perimeter of a square with sides of length 8 cm?',
+                'answer_type' => 'text',
+                'correct_answer' => '32',
+                'order' => 5
+            ]
+        ]
+    ],
+    [
+        'title' => 'SHS Physics - Numerical Problems',
+        'description' => 'This quiz requires you to solve physics problems and type in your numerical answers.',
+        'subject' => 'physics',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question_text' => 'A car accelerates uniformly from rest to 20 m/s in 5 seconds. What is its acceleration in m/s²?',
+                'answer_type' => 'text',
+                'correct_answer' => '4',
+                'order' => 1
+            ],
+            [
+                'question_text' => 'Calculate the force in Newtons needed to accelerate a 1500 kg car at 2 m/s².',
+                'answer_type' => 'text',
+                'correct_answer' => '3000',
+                'order' => 2
+            ],
+            [
+                'question_text' => 'A 50 kg object is lifted to a height of 10 meters. What is the gravitational potential energy gained in joules? (g = 10 m/s²)',
+                'answer_type' => 'text',
+                'correct_answer' => '5000',
+                'order' => 3
+            ],
+            [
+                'question_text' => 'What is the wavelength in meters of a wave with frequency 5 Hz and speed 20 m/s?',
+                'answer_type' => 'text',
+                'correct_answer' => '4',
+                'order' => 4
+            ],
+            [
+                'question_text' => 'A circuit has a resistance of 10 ohms and a current of 2 amperes. What is the voltage in volts?',
+                'answer_type' => 'text',
+                'correct_answer' => '20',
+                'order' => 5
+            ]
+        ]
+    ],
+    // JHS Core Subjects
+    [
+        'title' => 'JHS Mathematics - Basic Algebra',
+        'description' => 'Standard quiz covering basic algebra concepts for JHS students',
+        'subject' => 'mathematics',
+        'level' => 'jhs',
+        'questions' => [
+            [
+                'question' => 'Solve for x: 2x + 5 = 15',
+                'options' => ['x = 5', 'x = 10', 'x = 7.5', 'x = 4'],
+                'correct_answer' => 'x = 5'
+            ],
+            [
+                'question' => 'Simplify: 3(x + 2) - 4',
+                'options' => ['3x + 6 - 4', '3x + 2', '3x + 2 - 4', '3x + 6'],
+                'correct_answer' => '3x + 6 - 4'
+            ],
+            [
+                'question' => 'If y = 2x + 3, what is the value of y when x = 4?',
+                'options' => ['11', '8', '7', '10'],
+                'correct_answer' => '11'
+            ],
+            [
+                'question' => 'Solve: 5x - 3 = 2x + 9',
+                'options' => ['x = 4', 'x = 3', 'x = 6', 'x = 12'],
+                'correct_answer' => 'x = 4'
+            ],
+            [
+                'question' => 'Simplify: 2(3x - 4) + 5x',
+                'options' => ['11x - 8', '6x - 8 + 5x', '11x - 4', '6x - 4'],
+                'correct_answer' => '11x - 8'
+            ]
+        ]
+    ],
+    [
+        'title' => 'JHS English Language - Grammar',
+        'description' => 'Standard quiz on English grammar for JHS students',
+        'subject' => 'english',
+        'level' => 'jhs',
+        'questions' => [
+            [
+                'question' => 'Which of the following is a proper noun?',
+                'options' => ['Accra', 'city', 'building', 'country'],
+                'correct_answer' => 'Accra'
+            ],
+            [
+                'question' => 'Identify the verb in the sentence: "The students write their exams tomorrow."',
+                'options' => ['students', 'write', 'exams', 'tomorrow'],
+                'correct_answer' => 'write'
+            ],
+            [
+                'question' => 'Which tense is used in the sentence: "I have been studying for three hours."',
+                'options' => ['Present perfect continuous', 'Past perfect', 'Present continuous', 'Simple past'],
+                'correct_answer' => 'Present perfect continuous'
+            ],
+            [
+                'question' => 'Choose the correct article to complete the sentence: "She is ___ university student."',
+                'options' => ['a', 'an', 'the', 'No article needed'],
+                'correct_answer' => 'a'
+            ],
+            [
+                'question' => 'Identify the adverb in the sentence: "The boy ran quickly across the field."',
+                'options' => ['boy', 'ran', 'quickly', 'field'],
+                'correct_answer' => 'quickly'
+            ]
+        ]
+    ],
+    [
+        'title' => 'JHS Integrated Science - Basic Concepts',
+        'description' => 'Standard quiz covering basic science concepts for JHS students',
+        'subject' => 'science',
+        'level' => 'jhs',
+        'questions' => [
+            [
+                'question' => 'Which of the following is NOT a state of matter?',
+                'options' => ['Solid', 'Liquid', 'Gas', 'Energy'],
+                'correct_answer' => 'Energy'
+            ],
+            [
+                'question' => 'The process by which plants make their own food is called:',
+                'options' => ['Respiration', 'Photosynthesis', 'Transpiration', 'Digestion'],
+                'correct_answer' => 'Photosynthesis'
+            ],
+            [
+                'question' => 'Which of these is a renewable energy source?',
+                'options' => ['Coal', 'Natural gas', 'Solar', 'Petroleum'],
+                'correct_answer' => 'Solar'
+            ],
+            [
+                'question' => 'The smallest unit of life is:',
+                'options' => ['Cell', 'Atom', 'Molecule', 'Tissue'],
+                'correct_answer' => 'Cell'
+            ],
+            [
+                'question' => 'What is the chemical formula for water?',
+                'options' => ['H2O', 'CO2', 'O2', 'H2O2'],
+                'correct_answer' => 'H2O'
+            ]
+        ]
+    ],
+    [
+        'title' => 'JHS Social Studies - Citizenship',
+        'description' => 'Standard quiz on citizenship concepts for JHS students',
+        'subject' => 'social_studies',
+        'level' => 'jhs',
+        'questions' => [
+            [
+                'question' => 'Which of the following is a responsibility of a citizen?',
+                'options' => ['Right to education', 'Paying taxes', 'Freedom of speech', 'Right to vote'],
+                'correct_answer' => 'Paying taxes'
+            ],
+            [
+                'question' => 'Ghana gained independence in:',
+                'options' => ['1957', '1960', '1966', '1992'],
+                'correct_answer' => '1957'
+            ],
+            [
+                'question' => 'The first president of Ghana was:',
+                'options' => ['Kwame Nkrumah', 'Jerry John Rawlings', 'John Agyekum Kufuor', 'John Dramani Mahama'],
+                'correct_answer' => 'Kwame Nkrumah'
+            ],
+            [
+                'question' => 'Which of these is NOT one of Ghana\'s national symbols?',
+                'options' => ['The National Flag', 'The Coat of Arms', 'The Black Star', 'The Lion'],
+                'correct_answer' => 'The Lion'
+            ],
+            [
+                'question' => 'The highest court in Ghana is:',
+                'options' => ['High Court', 'Supreme Court', 'Court of Appeal', 'Circuit Court'],
+                'correct_answer' => 'Supreme Court'
+            ]
+        ]
+    ],
+    
+    // SHS Core Subjects
+    [
+        'title' => 'SHS Core Mathematics - Functions',
+        'description' => 'Standard quiz covering functions for SHS students',
+        'subject' => 'core_mathematics',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question' => 'If f(x) = 2x² + 3x - 4, what is f(2)?',
+                'options' => ['10', '12', '8', '6'],
+                'correct_answer' => '10'
+            ],
+            [
+                'question' => 'The domain of the function f(x) = √(x-3) is:',
+                'options' => ['x ≥ 3', 'x > 3', 'x ≥ 0', 'All real numbers'],
+                'correct_answer' => 'x ≥ 3'
+            ],
+            [
+                'question' => 'If f(x) = x² - 4 and g(x) = 2x + 1, what is (f ∘ g)(2)?',
+                'options' => ['21', '25', '9', '16'],
+                'correct_answer' => '25'
+            ],
+            [
+                'question' => 'The inverse of f(x) = 3x + 6 is:',
+                'options' => ['f⁻¹(x) = (x-6)/3', 'f⁻¹(x) = 3x - 6', 'f⁻¹(x) = x/3 - 2', 'f⁻¹(x) = (x+6)/3'],
+                'correct_answer' => 'f⁻¹(x) = (x-6)/3'
+            ],
+            [
+                'question' => 'A function that assigns exactly one output to each input is called:',
+                'options' => ['One-to-one function', 'Onto function', 'Linear function', 'Well-defined function'],
+                'correct_answer' => 'Well-defined function'
+            ]
+        ]
+    ],
+    [
+        'title' => 'SHS English Language - Comprehension',
+        'description' => 'Standard quiz on reading comprehension for SHS students',
+        'subject' => 'english_language',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question' => 'What is the main purpose of a thesis statement in an essay?',
+                'options' => [
+                    'To introduce the topic',
+                    'To state the main argument or point of view',
+                    'To provide background information',
+                    'To conclude the essay'
+                ],
+                'correct_answer' => 'To state the main argument or point of view'
+            ],
+            [
+                'question' => 'Which of the following is NOT a type of essay?',
+                'options' => ['Narrative', 'Descriptive', 'Interrogative', 'Expository'],
+                'correct_answer' => 'Interrogative'
+            ],
+            [
+                'question' => 'What is the term for a word that has the opposite meaning of another word?',
+                'options' => ['Synonym', 'Antonym', 'Homonym', 'Acronym'],
+                'correct_answer' => 'Antonym'
+            ],
+            [
+                'question' => 'Which literary device involves giving human qualities to non-human things?',
+                'options' => ['Simile', 'Metaphor', 'Personification', 'Alliteration'],
+                'correct_answer' => 'Personification'
+            ],
+            [
+                'question' => 'What is the purpose of a topic sentence in a paragraph?',
+                'options' => [
+                    'To provide a transition to the next paragraph',
+                    'To introduce the main idea of the paragraph',
+                    'To summarize the previous paragraph',
+                    'To provide evidence for an argument'
+                ],
+                'correct_answer' => 'To introduce the main idea of the paragraph'
+            ]
+        ]
+    ],
+    [
+        'title' => 'SHS Integrated Science - Scientific Methods',
+        'description' => 'Standard quiz on scientific methods for SHS students',
+        'subject' => 'integrated_science',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question' => 'What is the first step in the scientific method?',
+                'options' => [
+                    'Formulate a hypothesis',
+                    'Make observations',
+                    'Conduct an experiment',
+                    'Analyze data'
+                ],
+                'correct_answer' => 'Make observations'
+            ],
+            [
+                'question' => 'A testable explanation for an observation is called:',
+                'options' => ['Theory', 'Law', 'Hypothesis', 'Conclusion'],
+                'correct_answer' => 'Hypothesis'
+            ],
+            [
+                'question' => 'The variable that is changed in an experiment is called:',
+                'options' => [
+                    'Dependent variable',
+                    'Independent variable',
+                    'Control variable',
+                    'Responding variable'
+                ],
+                'correct_answer' => 'Independent variable'
+            ],
+            [
+                'question' => 'What is the purpose of a control group in an experiment?',
+                'options' => [
+                    'To provide a basis for comparison',
+                    'To speed up the experiment',
+                    'To make the experiment more complex',
+                    'To ensure the experiment fails'
+                ],
+                'correct_answer' => 'To provide a basis for comparison'
+            ],
+            [
+                'question' => 'Which of the following is NOT part of the scientific method?',
+                'options' => [
+                    'Forming a hypothesis',
+                    'Conducting experiments',
+                    'Accepting results without verification',
+                    'Drawing conclusions'
+                ],
+                'correct_answer' => 'Accepting results without verification'
+            ]
+        ]
+    ],
+    
+    // SHS Elective Subjects - Science
+    [
+        'title' => 'SHS Biology - Cell Biology',
+        'description' => 'Standard quiz on cell biology for SHS students',
+        'subject' => 'biology',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question' => 'Which organelle is responsible for protein synthesis in a cell?',
+                'options' => ['Nucleus', 'Ribosome', 'Mitochondria', 'Golgi apparatus'],
+                'correct_answer' => 'Ribosome'
+            ],
+            [
+                'question' => 'The powerhouse of the cell is:',
+                'options' => ['Nucleus', 'Ribosome', 'Mitochondria', 'Endoplasmic reticulum'],
+                'correct_answer' => 'Mitochondria'
+            ],
+            [
+                'question' => 'Which of the following is NOT a function of the cell membrane?',
+                'options' => [
+                    'Controlling what enters and exits the cell',
+                    'Providing structure and support',
+                    'Protein synthesis',
+                    'Cell recognition'
+                ],
+                'correct_answer' => 'Protein synthesis'
+            ],
+            [
+                'question' => 'The process by which cells divide to form two identical daughter cells is:',
+                'options' => ['Meiosis', 'Mitosis', 'Binary fission', 'Budding'],
+                'correct_answer' => 'Mitosis'
+            ],
+            [
+                'question' => 'Which of the following is a difference between plant and animal cells?',
+                'options' => [
+                    'Plant cells have mitochondria while animal cells do not',
+                    'Animal cells have a cell wall while plant cells do not',
+                    'Plant cells have chloroplasts while animal cells do not',
+                    'Animal cells have a nucleus while plant cells do not'
+                ],
+                'correct_answer' => 'Plant cells have chloroplasts while animal cells do not'
+            ]
+        ]
+    ],
+    [
+        'title' => 'SHS Chemistry - Periodic Table',
+        'description' => 'Standard quiz on the periodic table for SHS students',
+        'subject' => 'chemistry',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question' => 'Who is credited with creating the modern periodic table?',
+                'options' => [
+                    'Dmitri Mendeleev',
+                    'John Dalton',
+                    'Ernest Rutherford',
+                    'Niels Bohr'
+                ],
+                'correct_answer' => 'Dmitri Mendeleev'
+            ],
+            [
+                'question' => 'Elements in the same group of the periodic table have:',
+                'options' => [
+                    'The same number of protons',
+                    'Similar chemical properties',
+                    'The same atomic mass',
+                    'The same number of neutrons'
+                ],
+                'correct_answer' => 'Similar chemical properties'
+            ],
+            [
+                'question' => 'Which element has the atomic number 1?',
+                'options' => ['Helium', 'Hydrogen', 'Lithium', 'Carbon'],
+                'correct_answer' => 'Hydrogen'
+            ],
+            [
+                'question' => 'The elements in Group 18 (or 8A) of the periodic table are called:',
+                'options' => [
+                    'Halogens',
+                    'Noble gases',
+                    'Alkali metals',
+                    'Transition metals'
+                ],
+                'correct_answer' => 'Noble gases'
+            ],
+            [
+                'question' => 'As you move from left to right across a period, what generally happens to the atomic radius?',
+                'options' => [
+                    'It increases',
+                    'It decreases',
+                    'It remains the same',
+                    'It first increases then decreases'
+                ],
+                'correct_answer' => 'It decreases'
+            ]
+        ]
+    ],
+    [
+        'title' => 'SHS Physics - Mechanics',
+        'description' => 'Standard quiz on mechanics for SHS students',
+        'subject' => 'physics',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question' => 'Newton\'s First Law of Motion is also known as:',
+                'options' => [
+                    'Law of Acceleration',
+                    'Law of Inertia',
+                    'Law of Action and Reaction',
+                    'Law of Conservation of Energy'
+                ],
+                'correct_answer' => 'Law of Inertia'
+            ],
+            [
+                'question' => 'The SI unit of force is:',
+                'options' => ['Joule', 'Watt', 'Newton', 'Pascal'],
+                'correct_answer' => 'Newton'
+            ],
+            [
+                'question' => 'What is the formula for calculating work?',
+                'options' => [
+                    'W = m × g',
+                    'W = F × d',
+                    'W = m × v²',
+                    'W = P × t'
+                ],
+                'correct_answer' => 'W = F × d'
+            ],
+            [
+                'question' => 'A body moving in a circle at constant speed is experiencing:',
+                'options' => [
+                    'No acceleration',
+                    'Constant acceleration',
+                    'Centripetal acceleration',
+                    'Gravitational acceleration only'
+                ],
+                'correct_answer' => 'Centripetal acceleration'
+            ],
+            [
+                'question' => 'The principle that states that when a body is partially or completely immersed in a fluid, it experiences an upward force equal to the weight of the fluid displaced is:',
+                'options' => [
+                    'Pascal\'s principle',
+                    'Bernoulli\'s principle',
+                    'Archimedes\' principle',
+                    'Newton\'s principle'
+                ],
+                'correct_answer' => 'Archimedes\' principle'
+            ]
+        ]
+    ],
+    
+    // SHS Elective Subjects - Arts & Business
+    [
+        'title' => 'SHS Economics - Basic Concepts',
+        'description' => 'Standard quiz on basic economic concepts for SHS students',
+        'subject' => 'economics',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question' => 'The basic economic problem is:',
+                'options' => [
+                    'Inflation',
+                    'Unemployment',
+                    'Scarcity',
+                    'Taxation'
+                ],
+                'correct_answer' => 'Scarcity'
+            ],
+            [
+                'question' => 'Which of the following is NOT a factor of production?',
+                'options' => ['Land', 'Labor', 'Money', 'Capital'],
+                'correct_answer' => 'Money'
+            ],
+            [
+                'question' => 'When price increases, quantity demanded:',
+                'options' => [
+                    'Increases',
+                    'Decreases',
+                    'Remains the same',
+                    'May increase or decrease'
+                ],
+                'correct_answer' => 'Decreases'
+            ],
+            [
+                'question' => 'The total value of goods and services produced within a country in a year is called:',
+                'options' => ['GNP', 'GDP', 'National Income', 'Balance of Trade'],
+                'correct_answer' => 'GDP'
+            ],
+            [
+                'question' => 'A market structure with many sellers offering similar but not identical products is:',
+                'options' => [
+                    'Perfect competition',
+                    'Monopoly',
+                    'Monopolistic competition',
+                    'Oligopoly'
+                ],
+                'correct_answer' => 'Monopolistic competition'
+            ]
+        ]
+    ],
+    [
+        'title' => 'SHS Accounting - Financial Statements',
+        'description' => 'Standard quiz on financial statements for SHS students',
+        'subject' => 'accounting',
+        'level' => 'shs',
+        'questions' => [
+            [
+                'question' => 'Which financial statement shows the financial position of a business at a specific point in time?',
+                'options' => [
+                    'Income Statement',
+                    'Balance Sheet',
+                    'Cash Flow Statement',
+                    'Statement of Changes in Equity'
+                ],
+                'correct_answer' => 'Balance Sheet'
+            ],
+            [
+                'question' => 'The accounting equation is:',
+                'options' => [
+                    'Assets = Liabilities + Owner\'s Equity',
+                    'Assets = Liabilities - Owner\'s Equity',
+                    'Assets + Liabilities = Owner\'s Equity',
+                    'Assets - Owner\'s Equity = Liabilities'
+                ],
+                'correct_answer' => 'Assets = Liabilities + Owner\'s Equity'
+            ],
+            [
+                'question' => 'Which of the following is NOT considered an asset?',
+                'options' => [
+                    'Cash',
+                    'Inventory',
+                    'Accounts Payable',
+                    'Equipment'
+                ],
+                'correct_answer' => 'Accounts Payable'
+            ],
+            [
+                'question' => 'The principle that revenue should be recognized when it is earned is known as:',
+                'options' => [
+                    'Matching principle',
+                    'Revenue recognition principle',
+                    'Historical cost principle',
+                    'Going concern principle'
+                ],
+                'correct_answer' => 'Revenue recognition principle'
+            ],
+            [
+                'question' => 'Net income is calculated as:',
+                'options' => [
+                    'Revenue - Expenses',
+                    'Assets - Liabilities',
+                    'Revenue + Expenses',
+                    'Assets + Liabilities'
+                ],
+                'correct_answer' => 'Revenue - Expenses'
+            ]
+        ]
+    ]
+];
+
+// Function to generate a unique ID
+function generateUniqueId() {
+    return uniqid('quiz_') . '_' . time();
+}
+
+/**
+ * Check if a quiz with the same title and subject already exists
+ * 
+ * @param string $title The quiz title
+ * @param string $subject The quiz subject
+ * @param string $level The education level (jhs/shs)
+ * @return bool True if the quiz already exists, false otherwise
+ */
+function quizExists($title, $subject, $level) {
+    // Get all existing quizzes
+    $existingQuizzes = getAllQuizzes();
+    
+    foreach ($existingQuizzes as $quiz) {
+        // Check if there's a quiz with the same title, subject, and level
+        if (isset($quiz['title']) && isset($quiz['subject']) && isset($quiz['level']) &&
+            $quiz['title'] === $title && 
+            $quiz['subject'] === $subject && 
+            $quiz['level'] === $level) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+// Counter for tracking created quizzes
+$createdCount = 0;
+$errorCount = 0;
+
+// Process each quiz template
+foreach ($quizTemplates as $template) {
+    try {
+        // Check if this quiz already exists
+        if (quizExists($template['title'], $template['subject'], $template['level'])) {
+            error_log("Skipping duplicate quiz: {$template['title']}");
+            continue; // Skip to the next template
+        }
+        
+        // Create quiz data structure
+        $quizId = generateUniqueId();
+        $quiz = [
+            'quiz_id' => $quizId,
+            'title' => $template['title'],
+            'description' => $template['description'],
+            'subject' => $template['subject'],
+            'level' => $template['level'],
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => 'system',
+            'questions' => []
+        ];
+        
+        // Add questions to the quiz
+        foreach ($template['questions'] as $index => $questionData) {
+            $questionId = $quizId . '_q' . ($index + 1);
+            
+            // Check if this is a text input question or multiple choice
+            $isTextInput = isset($questionData['answer_type']) && $questionData['answer_type'] === 'text';
+            $isTheory = isset($questionData['question_type']) && $questionData['question_type'] === 'theory';
+            
+            if ($isTheory) {
+                // Theory question (essay/long answer)
+                $question = [
+                    'question_id' => $questionId,
+                    'quiz_id' => $quizId,
+                    'question_text' => $questionData['question_text'],
+                    'answer_type' => 'theory',
+                    'model_answer' => $questionData['model_answer'],
+                    'explanation' => isset($questionData['explanation']) ? $questionData['explanation'] : '',
+                    'order' => isset($questionData['order']) ? $questionData['order'] : ($index + 1)
+                ];
+            } elseif ($isTextInput) {
+                // Text input question (short answer)
+                $question = [
+                    'question_id' => $questionId,
+                    'quiz_id' => $quizId,
+                    'question_text' => $questionData['question_text'],
+                    'answer_type' => 'text',
+                    'correct_answer' => $questionData['correct_answer'],
+                    'explanation' => isset($questionData['explanation']) ? $questionData['explanation'] : '',
+                    'order' => isset($questionData['order']) ? $questionData['order'] : ($index + 1)
+                ];
+            } else {
+                // Multiple choice question
+                $question = [
+                    'question_id' => $questionId,
+                    'quiz_id' => $quizId,
+                    'question_text' => isset($questionData['question_text']) ? $questionData['question_text'] : $questionData['question'],
+                    'option_a' => $questionData['options'][0],
+                    'option_b' => $questionData['options'][1],
+                    'option_c' => $questionData['options'][2],
+                    'option_d' => $questionData['options'][3],
+                    'correct_answer' => $questionData['correct_answer'],
+                    'explanation' => isset($questionData['explanation']) ? $questionData['explanation'] : '',
+                    'order' => isset($questionData['order']) ? $questionData['order'] : ($index + 1)
+                ];
+                
+                // Add option E if it exists
+                if (isset($questionData['options'][4])) {
+                    $question['option_e'] = $questionData['options'][4];
+                }
+            }
+            
+            $quiz['questions'][] = $question;
+        }
+        
+        // Save the quiz to storage
+        $result = saveQuiz($quiz);
+        
+        if ($result) {
+            $createdCount++;
+            error_log("Created quiz: {$template['title']}");
+        } else {
+            $errorCount++;
+            error_log("Failed to create quiz: {$template['title']}");
+        }
+    } catch (Exception $e) {
+        $errorCount++;
+        error_log("Error creating quiz {$template['title']}: " . $e->getMessage());
+    }
+}
+
+// Output results
+echo "Quiz generation completed.\n";
+echo "Successfully created: $createdCount quizzes\n";
+echo "Errors: $errorCount\n";
+echo "See error log for details.\n";
+
+// Function to run the script from the browser
+if (isset($_GET['run']) && $_GET['run'] === 'true') {
+    header('Content-Type: text/plain');
+    echo "Running standard quiz generation...\n";
+    echo "Created $createdCount quizzes with $errorCount errors.\n";
+    echo "Refresh the quizzes page to see the new quizzes.";
+}
+?>
